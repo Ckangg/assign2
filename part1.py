@@ -10,6 +10,8 @@ from sklearn.preprocessing import StandardScaler
 from itertools import cycle, islice
 import scipy.io as io
 from scipy.cluster.hierarchy import dendrogram, linkage  #
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
 # import plotly.figure_factory as ff
 import math
@@ -39,15 +41,37 @@ def compute():
     """
     A.	Load the following 5 datasets with 100 samples each: noisy_circles (nc), noisy_moons (nm), blobs with varied variances (bvv), Anisotropicly distributed data (add), blobs (b). Use the parameters from (https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html), with any random state. (with random_state = 42). Not setting the correct random_state will prevent me from checking your results.
     """
+    random_state = 42
+
+    # Generating the datasets
+    noisy_circles = datasets.make_circles(n_samples=100, factor=.5, noise=.05, random_state=random_state)
+    noisy_moons = datasets.make_moons(n_samples=100, noise=.05, random_state=random_state)
+    varied = datasets.make_blobs(n_samples=100, cluster_std=[1.0, 2.5, 0.5], random_state=random_state)
+    aniso_data, aniso_labels = datasets.make_blobs(n_samples=100, random_state=random_state)
+    transformation = [[0.6, -0.6], [-0.4, 0.8]]
+    aniso = (np.dot(aniso_data, transformation), aniso_labels)
+    blobs = datasets.make_blobs(n_samples=100, random_state=random_state)
+
 
     # Dictionary of 5 datasets. e.g., dct["nc"] = [data, labels]
     # 'nc', 'nm', 'bvv', 'add', 'b'. keys: 'nc', 'nm', 'bvv', 'add', 'b' (abbreviated datasets)
-    dct = answers["1A: datasets"] = {}
+    dct = answers["1A: datasets"] = {"nc": [noisy_circles[0], noisy_circles[1]],
+    "nm": [noisy_moons[0], noisy_moons[1]],
+    "bvv": [varied[0], varied[1]],
+    "add": [aniso[0], aniso[1]],
+    "b": [blobs[0], blobs[1]],}
 
     """
    B. Write a function called fit_kmeans that takes dataset (before any processing on it), i.e., pair of (data, label) Numpy arrays, and the number of clusters as arguments, and returns the predicted labels from k-means clustering. Use the init='random' argument and make sure to standardize the data (see StandardScaler transform), prior to fitting the KMeans estimator. This is the function you will use in the following questions. 
     """
-
+    def fit_kmeans(dataset, n_clusters):
+        data, _ = dataset
+        scaler = StandardScaler()
+        data_standardized = scaler.fit_transform(data) 
+        kmeans = KMeans(n_clusters=n_clusters, init='random', random_state=42)
+        kmeans.fit(data_standardized)
+        return kmeans.labels_
+        
     # dct value:  the `fit_kmeans` function
     dct = answers["1B: fit_kmeans"] = fit_kmeans
 
@@ -57,7 +81,27 @@ def compute():
     
     Create a pdf of the plots and return in your report. 
     """
-
+    k_values = [2, 3, 5, 10]
+    fig, axes = plt.subplots(nrows=4, ncols=5, figsize=(20, 16))
+    fig.suptitle('K-Means Clustering on Different Datasets with Various k Values', fontsize=16)
+    datasets_dict = {
+    "nc": noisy_circles,
+    "nm": noisy_moons,
+    "bvv": varied,
+    "add": aniso,
+    "b": blobs
+        }
+    dataset_names = ["noisy_circles", "noisy_moons", "varied", "aniso", "blobs"]
+    for i, k in enumerate(k_values):
+        for j, (key, dataset) in enumerate(datasets_dict.items()):
+            predicted_labels = fit_kmeans(dataset, k)
+            axes[i, j].scatter(dataset[0][:, 0], dataset[0][:, 1], c=predicted_labels, cmap='viridis', edgecolor='k')
+            axes[i, j].set_title(f"{dataset_names[j]}\n(k={k})")
+            axes[i, j].set_xticks([])
+            axes[i, j].set_yticks([])
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    plt.savefig('kmeans_clustering_plots.pdf')
+    plt.show()
     # dct value: return a dictionary of one or more abbreviated dataset names (zero or more elements) 
     # and associated k-values with correct clusters.  key abbreviations: 'nc', 'nm', 'bvv', 'add', 'b'. 
     # The values are the list of k for which there is success. Only return datasets where the list of cluster size k is non-empty.
