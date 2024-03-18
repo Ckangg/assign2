@@ -51,7 +51,7 @@ def compute():
     """
     #file_path = "C:/Users/Ender CK/.vscode/all data/hierarchical_toy_data.mat"
     file_path="hierarchical_toy_data.mat"
-    data = scipy.io.loadmat(file_path)
+    data = io.loadmat(file_path)
     answer1=data
     # return value of scipy.io.loadmat()
     answers["3A: toy data"] = answer1
