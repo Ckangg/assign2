@@ -59,7 +59,7 @@ def compute():
     "nm": [noisy_moons[0], noisy_moons[1]],
     "bvv": [varied[0], varied[1]],
     "add": [aniso[0], aniso[1]],
-    "b": [blobs[0], blobs[1]],}
+    "b": [blobs[0], blobs[1]]}
 
     """
    B. Write a function called fit_kmeans that takes dataset (before any processing on it), i.e., pair of (data, label) Numpy arrays, and the number of clusters as arguments, and returns the predicted labels from k-means clustering. Use the init='random' argument and make sure to standardize the data (see StandardScaler transform), prior to fitting the KMeans estimator. This is the function you will use in the following questions. 
