@@ -58,13 +58,13 @@ def compute():
     random_state = 12
 
     # Generating the dataset
-    X,y,labels= make_blobs(n_samples=n_samples, centers=centers, center_box=center_box, random_state=random_state,return_centers=True)
+    a = make_blobs(n_samples=n_samples, centers=centers, center_box=center_box, random_state=random_state,return_centers=True)
 
     # Displaying the generated data and labels
   
 
     # dct: return value from the make_blobs function in sklearn, expressed as a list of three numpy arrays
-    dct = answers["2A: blob"] = [X,y,labels]
+    dct = answers["2A: blob"] = [a[0],a[1],a[2]]
 
     """
     B. Modify the fit_kmeans function to return the SSE (see Equations 8.1 and 8.2 in the book).
