@@ -10,6 +10,7 @@ import myplots as myplt
 import time
 import warnings
 import numpy as np
+from sklearn.cluster import KMeans 
 import matplotlib.pyplot as plt
 from sklearn import cluster, datasets, mixture
 
