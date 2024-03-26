@@ -37,8 +37,14 @@ In this task you will explore different methods to find a good value for k
 # Change the arguments and return according to 
 # the question asked. 
 
-def fit_kmeans():
-    return None
+def fit_kmeans(dataset, n_clusters):
+    data= dataset
+    scaler = StandardScaler()
+    data_standardized = scaler.fit_transform(data) 
+    kmeans_model = KMeans(n_clusters=n_clusters, init='random', random_state=42)
+    kmeans_model.fit(data_standardized)
+    sse = kmeans_model.inertia_
+    return sse
 
 
 
@@ -59,7 +65,7 @@ def compute():
 
     # Generating the dataset
     a,b,c = make_blobs(n_samples=n_samples, centers=centers, center_box=center_box, random_state=random_state,return_centers=True)
-
+    data,labels = make_blobs(n_samples=n_samples, centers=centers, center_box=center_box, random_state=random_state)
     # Displaying the generated data and labels
   
 
@@ -69,14 +75,7 @@ def compute():
     """
     B. Modify the fit_kmeans function to return the SSE (see Equations 8.1 and 8.2 in the book).
     """
-    def fit_kmeans(dataset, n_clusters):
-        data= dataset
-        scaler = StandardScaler()
-        data_standardized = scaler.fit_transform(data) 
-        kmeans = KMeans(n_clusters=n_clusters, init='random', random_state=42)
-        kmeans.fit(data_standardized)
-        sse = kmeans.inertia_
-        return sse
+    
     
     # dct value: the `fit_kmeans` function
     dct = answers["2B: fit_kmeans"] = fit_kmeans
