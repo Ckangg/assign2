@@ -56,7 +56,7 @@ def compute():
     "nm": [noisy_moons[0], noisy_moons[1]],
     "bvv": [varied[0], varied[1]],
     "add": [aniso[0], aniso[1]],
-    "b": [blobs[0], blobs[1]],}
+    "b": [blobs[0], blobs[1]]}
     
     def fit_hierarchical_cluster(data, linkage, n_clusters):
         scaler = StandardScaler()
@@ -162,7 +162,7 @@ def compute():
     return predicted_labels
 
     # dct is the function described above in 4.C
-    dct = answers["4A: modified function"] = fit_modified
+    dct = answers["4A: modified function"] = fit_modified()
 
     return answers
 
