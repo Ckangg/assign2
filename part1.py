@@ -73,7 +73,7 @@ def compute():
         return kmeans.labels_
         
     # dct value:  the `fit_kmeans` function
-    dct = answers["1B: fit_kmeans"] = fit_kmeans
+    dct = answers["1B: fit_kmeans"] = fit_kmeans()
 
 
     """
