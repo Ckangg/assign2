@@ -58,7 +58,7 @@ def compute():
     random_state = 12
 
     # Generating the dataset
-    data = datasets.make_blobs(n_samples=n_samples, centers=centers, center_box=center_box, random_state=random_state)
+    data = datasets.make_blobs(n_samples=n_samples, centers=centers, center_box=center_box, random_state=random_state,return_centers=True)
 
     # Displaying the generated data and labels
   
