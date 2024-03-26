@@ -41,7 +41,7 @@ def fit_kmeans(dataset, n_clusters):
     data= dataset
     scaler = StandardScaler()
     data_standardized = scaler.fit_transform(data) 
-    kmeans_model = KMeans(n_clusters=n_clusters, init='random', random_state=42)
+    kmeans_model = KMeans(n_clusters=n_clusters, init='random',n_init=10, random_state=42)
     kmeans_model.fit(data_standardized)
     sse = kmeans_model.inertia_
     return sse
