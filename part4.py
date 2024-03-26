@@ -8,6 +8,7 @@ from sklearn.neighbors import kneighbors_graph
 from sklearn.preprocessing import StandardScaler
 from itertools import cycle, islice
 import scipy.io as io
+from scipy.cluster.hierarchy import linkage as scipy_linkage, fcluster
 from scipy.cluster.hierarchy import dendrogram, linkage  #
 
 # import plotly.figure_factory as ff
@@ -75,12 +76,12 @@ def compute():
     """
     loaded_datasets = [noisy_circles, noisy_moons, varied, aniso, blobs]
     def fit_hier_cluster_scipy(data, method, n_clusters):
-    scaler = StandardScaler()
-    data_scaled = scaler.fit_transform(data[0])
-    linkage_method = 'average' if method == 'centroid' else method
-    Z = scipy_linkage(data_scaled, method=linkage_method)
-    predicted_labels = fcluster(Z, n_clusters, criterion='maxclust') - 1
-    return predicted_labels
+        scaler = StandardScaler()
+        data_scaled = scaler.fit_transform(data[0])
+        linkage_method = 'average' if method == 'centroid' else method
+        Z = scipy_linkage(data_scaled, method=linkage_method)
+        predicted_labels = fcluster(Z, n_clusters, criterion='maxclust') - 1
+        return predicted_labels
 
 # Apply hierarchical clustering with different linkage methods
     linkage_methods_scipy = ['single', 'complete', 'ward', 'centroid']
@@ -162,7 +163,7 @@ def compute():
     return predicted_labels
 
     # dct is the function described above in 4.C
-    dct = answers["4A: modified function"] = fit_modified()
+    dct = answers["4A: modified function"] = fit_modified
 
     return answers
 
