@@ -12,6 +12,7 @@ import warnings
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import cluster, datasets, mixture
+
 from sklearn.datasets import make_blobs
 from sklearn.neighbors import kneighbors_graph
 from sklearn.preprocessing import StandardScaler
@@ -57,13 +58,13 @@ def compute():
     random_state = 12
 
     # Generating the dataset
-    data, labels = make_blobs(n_samples=n_samples, centers=centers, center_box=center_box, random_state=random_state)
+    data = datasets.make_blobs(n_samples=n_samples, centers=centers, center_box=center_box, random_state=random_state)
 
     # Displaying the generated data and labels
-    data, labels
+  
 
     # dct: return value from the make_blobs function in sklearn, expressed as a list of three numpy arrays
-    dct = answers["2A: blob"] = list(data,labels)
+    dct = answers["2A: blob"] = list(data)
 
     """
     B. Modify the fit_kmeans function to return the SSE (see Equations 8.1 and 8.2 in the book).
