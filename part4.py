@@ -27,12 +27,32 @@ In this task, you will explore hierarchical clustering over different datasets. 
 # Change the arguments and return according to 
 # the question asked. 
 
-def fit_hierarchical_cluster():
-    
-    return None
+def fit_hierarchical_cluster(data, linkage, n_clusters):
+    scaler = StandardScaler()
+    data_scaled = scaler.fit_transform(data[0])
+    hier_cluster = AgglomerativeClustering(n_clusters=n_clusters, linkage=linkage)
+    predicted_labels = hier_cluster.fit_predict(data_scaled)
+    return predicted_labels
 
-def fit_modified():
-    return None
+def find_optimal_cutoff(Z):
+    # Calculate the rate of change of distances between successive merges
+        distances = Z[:, 2]
+        distance_diff = np.diff(distances)
+    
+    # Find the maximum rate of change
+        max_diff_idx = np.argmax(distance_diff)
+        optimal_cutoff = distances[max_diff_idx]
+    
+        return optimal_cutoff
+
+def fit_modified(data, method):
+    scaler = StandardScaler()
+    data_scaled = scaler.fit_transform(data[0])
+    Z = scipy_linkage(data_scaled, method=method)
+    # Find the optimal cutoff distance
+    cutoff = find_optimal_cutoff(Z)
+    predicted_labels = fcluster(Z, cutoff, criterion='distance') - 1  # Adjust labels to start from 0
+    return predicted_labels
 
 
 def compute():
@@ -59,12 +79,12 @@ def compute():
     "add": [aniso[0], aniso[1]],
     "b": [blobs[0], blobs[1]]}
     
-    def fit_hierarchical_cluster(data, linkage, n_clusters):
+    '''def fit_hierarchical_cluster(data, linkage, n_clusters):
         scaler = StandardScaler()
         data_scaled = scaler.fit_transform(data[0])
         hier_cluster = AgglomerativeClustering(n_clusters=n_clusters, linkage=linkage)
         predicted_labels = hier_cluster.fit_predict(data_scaled)
-        return predicted_labels
+        return predicted_labels'''
 
     # dct value:  the `fit_hierarchical_cluster` function
     dct = answers["4A: fit_hierarchical_cluster"] = fit_hierarchical_cluster
@@ -153,14 +173,14 @@ def compute():
 
 # Plot the results for hierarchical clustering with automatic cutoff detection
     plot_all_linkage_clusters(loaded_datasets, auto_cutoff_predictions, linkage_methods_scipy, 'Hierarchical Clustering with Automatic Cutoff')
-    def fit_modified(data, method):
+    '''def fit_modified(data, method):
         scaler = StandardScaler()
         data_scaled = scaler.fit_transform(data[0])
         Z = scipy_linkage(data_scaled, method=method)
     # Find the optimal cutoff distance
         cutoff = find_optimal_cutoff(Z)
         predicted_labels = fcluster(Z, cutoff, criterion='distance') - 1  # Adjust labels to start from 0
-    return predicted_labels
+    return predicted_labels'''
 
     # dct is the function described above in 4.C
     dct = answers["4A: modified function"] = fit_modified
